@@ -40,7 +40,7 @@ podTemplate(label: label, containers: [
             stage('Lint') {
                 container('nodejs2') {
                     echo 'Linting..'
-                    sh 'npm lint'
+                    sh 'npm run lint'
                 }
             }
             stage ("Cleanup") {
