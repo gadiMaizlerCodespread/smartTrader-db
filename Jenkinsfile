@@ -48,7 +48,7 @@ podTemplate(label: label, containers: [
                     reportName: "Istanbul Report"
                     ])
                 }
-            },
+            }
             stage('Lint') {
                 container('nodejs2') {
                     echo 'Linting..'
