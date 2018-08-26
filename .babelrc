@@ -8,5 +8,21 @@
                 }
             }
         ]
+    ],
+    "plugins": [
+        [
+            "module-resolver",
+            {
+                "root": [
+                    "./src"
+                ],
+                "alias": {
+                    "utils": "./src/utils",
+                    "server": "./src/server",
+                    "db": "./src/dal",
+                    "logger": "./src/utils/logger"
+                }
+            }
+        ]
     ]
 }

@@ -11,36 +11,50 @@ podTemplate(label: label, containers: [
 )
 
 {
-    node(label) {
-        def branch = env.BRANCH_NAME
-        stage ("Checkout") {
-            container('nodejs2'){
-                checkout scm
+    try {
+        node(label) {
+            def branch = env.BRANCH_NAME
+            stage ("Checkout") {
+                container('nodejs2'){
+                    checkout scm
+                }
             }
-        }
-        stage('Install npm') {
-            container('nodejs2') {
-                echo 'installing npm...'
-                sh 'npm i npm@latest -g'
+            stage('Install npm') {
+                container('nodejs2') {
+                    echo 'installing npm...'
+                    sh 'npm i npm@latest -g'
+                }
             }
-        }
-        stage('Install dependencies') {
-            container('nodejs2') {
-                echo 'installing dependencies...'
-                sh 'npm install'           
+            stage('Install dependencies') {
+                container('nodejs2') {
+                    echo 'installing dependencies...'
+                    sh 'npm install'           
+                }
             }
-        }
-        stage('Test') {
-            container('nodejs2') {
-                echo 'Testing..'
-                sh 'npm test'
+            stage('Test') {
+                container('nodejs2') {
+                    echo 'Testing..'
+                    sh 'npm test'
+                }
             }
-        }
-         stage('Lint') {
-            container('nodejs2') {
-                echo 'Linting..'
-                sh 'npm lint'
+            stage('Lint') {
+                container('nodejs2') {
+                    echo 'Linting..'
+                    sh 'npm lint'
+                }
             }
-        }
+            stage ("Cleanup") {
+                    currentBuild.result = "SUCCESS"
+            }
+        } // node
+    }
+    catch (err) {
+        println "Something went wrong!"
+        println err
+        currentBuild.result = "FAILURE"
+    }
+    finally {
+        email.send(currentBuild)
+        println "Finished"
     }
 }
