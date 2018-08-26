@@ -17,7 +17,7 @@
         "react"
     ],
     "rules": {
-        "indent": ["error", 2, { "SwitchCase": 1 }],
+        "indent": ["error", 4, { "SwitchCase": 1 }],
         "quotes": ["error", "single", { "allowTemplateLiterals": true }],
         "semi": [
             "error",
