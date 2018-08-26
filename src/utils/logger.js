@@ -4,7 +4,7 @@ const { combine, timestamp, printf } = format;
 const fs = require('fs');
 const path = require('path');
 const LOG_DIR = 'logs';
-const LOG_FILE_NAME =  process.title || require('../../package.json').name;
+const LOG_FILE_NAME = !!process.title && process.title !== 'npm' ? process.title : require('../../package.json').name;
 import { DateUtils } from './utils';
 
 const tsFormat = () => {

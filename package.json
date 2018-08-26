@@ -10,6 +10,12 @@
     "test": "nyc --temp-directory coverage --reporter=html --reporter=text --exclude '**/*.spec.js' mocha --require babel-register  ./src/**/*.spec.js --require babel-core/register --coverage",
     "lint": "eslint --ignore-path ./config/.eslintignore --config ./config/.eslintrc.json ."
   },
+  "files": [
+    "src",
+    "lib",
+    "package.json",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bitmain-israel/smart-trade-node-project-template.git"

@@ -22,7 +22,7 @@ Node.js project-template for the smart-trader team.
     4. bugs
     5. homepage
 - Set process title on '/src/index.js'
-- Server folder contains a basic example of writing mocha unit-test.
+- Server folder contains a basic example of writing mocha unit-test - delete or modify to suite your needs.
 - jsconfig.json & .babelrc files contains list of module alias (for absolute path references) - you can modify it as you like.
 
 ## Debugging
@@ -53,3 +53,4 @@ In your project root path, execute the following commands:
 - git commit -m "first commit"
 - git remote add origin {your new repository URL}
 - git push origin master
+- git remote add upstream https://github.com/bitmain-israel/smart-trade-node-project-template.git
