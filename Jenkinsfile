@@ -37,6 +37,18 @@ podTemplate(label: label, containers: [
                     sh 'npm test'
                 }
             }
+            stage ("Coverage") {
+                container('nodejs2'){
+                    publishHTML (target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: "coverage",
+                    reportFiles: "index.html",
+                    reportName: "Istanbul Report"
+                    ])
+                }
+            },
             stage('Lint') {
                 container('nodejs2') {
                     echo 'Linting..'
