@@ -54,3 +54,4 @@ In your project root path, execute the following commands:
 - git remote add origin {your new repository URL}
 - git push origin master
 - git remote add upstream https://github.com/bitmain-israel/smart-trade-node-project-template.git
+- git remote set-url --push upstream DISABLE
