@@ -14,7 +14,6 @@ const tsFormat = () => {
     catch (err) {
         // console.error(err);
     }
-
 };
 
 const myFormat = printf(info => {
