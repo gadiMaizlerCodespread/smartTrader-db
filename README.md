@@ -15,6 +15,7 @@ Node.js project-template for the smart-trader team.
 ## How to use this project?
 
 - Download this repository as zip file from: https://github.com/bitmain-israel/smart-trade-node-project-template/archive/master.zip
+- Run 'npm install'
 - Change the following entries in package.json to address the new repository:
     1. name
     2. description
