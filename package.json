@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon --inspect  ./src/index.js --exec babel-node",
     "build": "babel src -d lib",
-    "run:dev": "node ./lib/index.js",
+    "run:prod": "node .",
     "test": "nyc --temp-directory coverage --reporter=html --reporter=text --exclude '**/*.spec.js' mocha --require babel-register  ./src/**/*.spec.js --require babel-core/register --coverage",
     "lint": "eslint --ignore-path ./config/.eslintignore --config ./config/.eslintrc.json ."
   },
