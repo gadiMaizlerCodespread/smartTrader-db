@@ -28,12 +28,14 @@ if (!fs.existsSync(LOG_DIR)) {
 
 const consoleFormat = combine(
   format.colorize(),
+  format.splat(),
   timestamp(),
   myFormat
 );
 
 
 const fileFormat = combine(
+  format.splat(),
   timestamp(),
   myFormat
 );
