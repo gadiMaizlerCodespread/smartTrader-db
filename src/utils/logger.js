@@ -98,10 +98,10 @@ class STLogger {
 
   verbose(msg, ...meta) { if (this._logger) this._logger.verbose(msg, ...meta); }
 
-  level() { return this._logger && this._logger.transports.file ? this._logger.transports.file.level : 'debug (initializing)'; }
+  level() { return this._logger && this._logger.transports[1] ? this._logger.transports[1].level : 'debug (initializing)'; }
 
   getFileLogLevel() {
-    return this._logger.transports.file.level;
+    return this._logger.transports[1].level;
   }
 
   setLogLevel(newLevel) {
@@ -114,14 +114,14 @@ class STLogger {
     newLevel = newLevel.toLowerCase();
 
     if (!(newLevel == 'info' || newLevel == 'debug' || newLevel == 'error' || newLevel == 'warn')) {
-      this.warn('New log level "%s" is invalid, no change in value ("%s"). Allowed values are: "INFO" (recommended), "DEBUG", "WARN" or "ERROR".', newLevel, this._logger.transports.file.level);
+      this.warn('New log level "%s" is invalid, no change in value ("%s"). Allowed values are: "INFO" (recommended), "DEBUG", "WARN" or "ERROR".', newLevel, this._logger.transports[1].level);
     }
-    else if (this._logger.transports.file.level !== newLevel) {
-      this._logger.transports.file.level = newLevel;
+    else if (this._logger.transports[1].level !== newLevel) {
+      this._logger.transports[1].level = newLevel;
       this.info('Log level was set to "%s".', newLevel.toUpperCase());
     }
     else {
-      this.debug('Set log level ignored, no change in value ("%s").', this._logger.transports.file.level);
+      this.debug('Set log level ignored, no change in value ("%s").', this._logger.transports[1].level);
     }
 
   }
@@ -140,15 +140,15 @@ class STLogger {
         this.warn('New log max files cannot be less than 1 kb, ignoring');
         return;
       }
-      case this._logger.transports.file.maxsize === (newSize * 1024): {
-        this.debug('Set log max size ignored, no change in value (%s).', this._logger.transports.file.maxsize);
+      case this._logger.transports[1].maxsize === (newSize * 1024): {
+        this.debug('Set log max size ignored, no change in value (%s).', this._logger.transports[1].maxsize);
         return;
       }
     }
 
     // max file size in config is expressed in KB, while logger uses bytes.
-    this._logger.transports.file.maxsize = newSize * 1024;
-    this._logger.transports.error.maxsize = newSize * 1024;
+    this._logger.transports[1].maxsize = newSize * 1024;
+    this._logger.transports[3].maxsize = newSize * 1024;
 
     this.info('Log file max size was set to %s KB.', newSize);
 
@@ -168,14 +168,14 @@ class STLogger {
         this.warn('New log max files cannot be less than 1, ignoring');
         return;
       }
-      case this._logger.transports.file.maxFiles === newMaxFiles: {
-        this.debug('Set log max files ignored, no change in value (%s).', this._logger.transports.file.maxFiles);
+      case this._logger.transports[1].maxFiles === newMaxFiles: {
+        this.debug('Set log max files ignored, no change in value (%s).', this._logger.transports[1].maxFiles);
         return;
       }
     }
 
-    this._logger.transports.file.maxFiles = newMaxFiles;
-    this._logger.transports.error.maxFiles = newMaxFiles;
+    this._logger.transports[1].maxFiles = newMaxFiles;
+    this._logger.transports[3].maxFiles = newMaxFiles;
 
     this.info('Log max files was set to %s.', newMaxFiles);
   }
