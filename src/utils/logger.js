@@ -177,6 +177,13 @@ class STLogger {
 
     this.info('Log max files was set to %s.', newMaxFiles);
   }
+
+  updateLogConfig(logLevel, logMaxFileSize, logMaxFiles) {
+    this.setLogLevel(logLevel);
+    this.setLogMaxFileSize(logMaxFileSize);
+    this.setLogMaxFiles(logMaxFiles);
+  }
+
 }
 
 /*   winston log levels are: silly, debug, verbose, info, warn, error   */
