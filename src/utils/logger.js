@@ -90,7 +90,7 @@ class STLogger {
 
   info(msg, ...meta) { if (this._logger) this._logger.info(msg, ...meta); }
 
-  err(msg, ...meta) { if (this._logger) this._logger.error(msg, ...meta); }
+  error(msg, ...meta) { if (this._logger) this._logger.error(msg, ...meta); }
 
   debug(msg, ...meta) { if (this._logger) this._logger.debug(msg, ...meta); }
 
