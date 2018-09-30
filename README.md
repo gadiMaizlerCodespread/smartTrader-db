@@ -57,3 +57,4 @@ In your project root path, execute the following commands:
 - git remote add upstream https://github.com/bitmain-israel/smart-trade-node-project-template.git
 - git remote set-url --push upstream DISABLE
 - git pull upstream master --allow-unrelated-histories
+- XXX
