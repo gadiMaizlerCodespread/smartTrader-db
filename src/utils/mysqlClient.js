@@ -38,6 +38,7 @@ class MysqlClient {
     const balance2 = event.balance2 ? event.balance2 : '0';
     const errorCode = event.errorCode ? event.errorCode : '-1';
     const errorMessage =  event.errorMessage   ? '"' + event.errorMessage + '"' : '""';
+    const sendingModule = event.sendingModule ?  event.sendingModule : '""';
 
 
     // requestId, exchangeOrderId, notificationTypeId, amount, price, exchangeId, ask, bid, balance1, balance2, errorCode, errorMessage, eventTimeStamp
@@ -54,14 +55,15 @@ class MysqlClient {
     + balance2 +     ','
     + errorCode + ','
     + errorMessage + ',\''
-    + event.eventTimeStamp +  '\');'
+    + event.eventTimeStamp +  '\',\''
+    + sendingModule + '\');'
 
     , function (error, results, fields) {
       if (error) {
         logger.error('could not write to database err = ' + error);
         throw error;
       }
-      // logger.debug('order written to db');
+      logger.debug('order written to db');
     });
   }
 
@@ -115,7 +117,7 @@ class MysqlClient {
         logger.error('could not write to database err = ' + error);
         throw error;
       }
-      // logger.debug('order written to db');
+      logger.debug('order written to db');
     });
   }
 }
