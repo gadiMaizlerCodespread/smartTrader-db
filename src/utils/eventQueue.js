@@ -46,7 +46,7 @@ class EventQueue {
         if (err) {
           return console.error(err);
         }
-        let min = Math.min.apply(null, offsets[topic.topic][topic.partition]);
+        const min = Math.min.apply(null, offsets[topic.topic][topic.partition]);
         this.notificationsConsumer.setOffset(topic.topic, topic.partition, min);
       });
     });
@@ -61,12 +61,13 @@ class EventQueue {
         if (err) {
           return console.error(err);
         }
-        let min = Math.min.apply(null, offsets[topic.topic][topic.partition]);
+        const min = Math.min.apply(null, offsets[topic.topic][topic.partition]);
         this.ordersConsumer.setOffset(topic.topic, topic.partition, min);
       });
     });
 
     this.notificationsConsumer.on('message', function (message) {
+      console.log('NOTIFICATION key = ' + message.key);
       console.log('NOTIFICATION type - ' + NotificationsString[message.key] + ' value  = ' + message.value);
       const value = JSON.parse(message.value);
       mysqlClient.writeNotificationEvent(message.key, value);

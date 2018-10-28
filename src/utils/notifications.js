@@ -24,5 +24,6 @@ export const NotificationsString = {
   7: 'Update',
   8: 'Finished',
   9: 'Error',
-  10:'Received On Server'
+  10:'Received On Server',
+  11: 'Successfully Logged In To Exchange'
 };

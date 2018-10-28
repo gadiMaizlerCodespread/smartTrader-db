@@ -1,7 +1,7 @@
 import createError from 'http-errors';
 import express from 'express';
-import indexRouter from '../../routes/index';
-import EventQueue from '../utils/eventQueue';
+import indexRouter from 'index';
+import EventQueue from 'eventQueue';
 import logger from 'logger';
 
 
