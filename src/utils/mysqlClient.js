@@ -1,8 +1,7 @@
 import mysql from 'mysql';
 import logger from 'logger';
 const SCHEMA_NAME = 'smartTrader';
-import { exchangeIds } from './exchangeIds';
-import { Notifications, NotificationsString }  from  './notifications';
+import { Notifications, exchangeIds }  from  'smart-trader-common';
 
 
 // connection.query('show tables', function (error, results, fields) {

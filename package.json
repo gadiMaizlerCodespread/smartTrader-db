@@ -48,6 +48,7 @@
     "express": "^4.16.3",
     "kafka-node": "^3.0.1",
     "mysql": "^2.16.0",
+    "smart-trader-common": "git+https://github.com/bitmain-israel/smart-trader-common.git",
     "winston": "^3.0.0"
   }
 }

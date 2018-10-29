@@ -1,8 +1,6 @@
 import logger from 'logger';
-import { Notifications, NotificationsString }  from  './notifications';
-import { orderTypesStr } from './orderTypes';
+import { NotificationsString, orderTypesStr }  from  'smart-trader-common';
 import MysqlClient from './mysqlClient';
-import exchangeIds from './exchangeIds';
 
 const kafka = require('kafka-node');
 
