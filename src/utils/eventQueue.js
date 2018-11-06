@@ -4,25 +4,19 @@ import MysqlClient from './mysqlClient';
 
 const kafka = require('kafka-node');
 
-// globals - configurable
-const ORDERS_TOPIC = 'orders';
-const NOTIFICATIONS_TOPIC = 'notifications';
 
-const PORT = '2181';
-const URL = 'localhost';
-
-let PARTITION = 0;
+const PARTITION = 0;
 
 class EventQueue {
-  constructor() {
+  constructor(config) {
 
     //  order  producer initialization
-    const client1 = new kafka.Client(URL + ':' + PORT);
-    const client2 = new kafka.Client(URL + ':' + PORT);
+    const client1 = new kafka.Client(config.kafkaZookeeperUrl + ':' + config.kafkaZookeeperPort);
+    const client2 = new kafka.Client(config.kafkaZookeeperUrl + ':' + config.kafkaZookeeperPort);
     // notification client
     // let notificationClient = new kafka.Client('localhost:2182');
-    const notificationsTopic = [{ topic: NOTIFICATIONS_TOPIC, partition: PARTITION }];
-    const ordersTopic = [{ topic: ORDERS_TOPIC, partition: PARTITION }];
+    const notificationsTopic = [{ topic: config.notificationsTopic, partition: PARTITION }];
+    const ordersTopic = [{ topic: config.ordersTopic, partition: PARTITION }];
 
     const options = { autoCommit: true, fetchMaxWaitMs: 1000, fetchMaxBytes: 1024 * 1024 };
     this.notificationsConsumer = new kafka.Consumer(client1, notificationsTopic, options);
@@ -32,36 +26,14 @@ class EventQueue {
     this.offset2 = new kafka.Offset(client2);
 
 
-    const mysqlClient = new MysqlClient();
+    const mysqlClient = new MysqlClient(config);
 
     this.notificationsConsumer.on('error', function (err) {
-      logger.error('Kafka experienced an error - ' + err);
-    });
-
-    this.notificationsConsumer.on('offsetOutOfRange', function (topic) {
-      topic.maxNum = 2;
-      this.offset1.fetch([topic], function (err, offsets) {
-        if (err) {
-          return console.error(err);
-        }
-        const min = Math.min.apply(null, offsets[topic.topic][topic.partition]);
-        this.notificationsConsumer.setOffset(topic.topic, topic.partition, min);
-      });
+      logger.error('Kafka experienced an error - %s', err);
     });
 
     this.ordersConsumer.on('error', function (err) {
-      logger.error('Kafka experienced an error - ' + err);
-    });
-
-    this.ordersConsumer.on('offsetOutOfRange', function (topic) {
-      topic.maxNum = 2;
-      this.offset2.fetch([topic], function (err, offsets) {
-        if (err) {
-          return console.error(err);
-        }
-        const min = Math.min.apply(null, offsets[topic.topic][topic.partition]);
-        this.ordersConsumer.setOffset(topic.topic, topic.partition, min);
-      });
+      logger.error('Kafka experienced an error - %s', err);
     });
 
     this.notificationsConsumer.on('message', function (message) {

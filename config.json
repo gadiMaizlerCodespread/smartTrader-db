@@ -1,0 +1,10 @@
+{
+  "mysqlSchemaName" : "smartTrader",
+  "mysqlHost" : "localhost",
+  "mysqlUser" : "root",
+  "mysqlPassword" : "1234",
+   "ordersTopic" : "orders",
+   "notificationsTopic" : "notifications",
+   "kafkaZookeeperPort" : "2181",
+   "kafkaZookeeperUrl" : "localhost"
+}
