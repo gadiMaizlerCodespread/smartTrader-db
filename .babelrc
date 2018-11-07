@@ -22,7 +22,8 @@
                     "db": "./src/dal",
                     "logger": "./src/utils/logger",
                     "index" : "./routes/index",
-                    "eventQueue": "./src/utils/eventQueue"                
+                    "eventQueue": "./src/utils/eventQueue",
+                    "mysqlClient": "./src/utils/mysqlClient"                 
                 }
             }
         ]

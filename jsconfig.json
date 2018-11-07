@@ -19,7 +19,11 @@
             ],
             "eventQueue": [
                 "./src/utils/eventQueue"
-            ] 
+            ],
+            "mysqlClient": [
+                "./src/utils/mysqlClient"
+            ]  
+            
         }
     },
     "exclude": [
