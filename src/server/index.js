@@ -4,16 +4,43 @@ import indexRouter from 'index';
 import EventQueue from 'eventQueue';
 import logger from 'logger';
 import MysqlClient from 'mysqlClient';
+import kafka       from 'kafka-node';
+import { Module } from './moduleInfo';
+
+
+
+import mysql from 'mysql';
+
+
 
 class Server {
   constructor(confParams) {
 
     this.confParams = confParams;
 
-    this.mysqlClient = new MysqlClient(confParams);
-    this.eventQueue = new EventQueue({ endpoint: `${confParams.kafkaZookeeperUrl}:${confParams.kafkaZookeeperPort}`,
-      topics: [confParams.notificationsTopic, confParams.ordersTopic]
-    }, this.handleMessage.bind(this));
+    /** ******** MYSQL construction ******** **/
+    const connection = mysql.createConnection({
+      host     : confParams.mysqlHost,
+      user     : confParams.mysqlUser,
+      password : confParams.mysqlPassword,
+      database : confParams.mysqlSchemaName
+    });
+    connection.connect();
+    this.mysqlClient = new MysqlClient({ connection, logger });
+
+    /** ******** KAFKA construction ******** **/
+    this.eventQueue = new EventQueue(
+      { endpoint: `${confParams.kafkaZookeeperUrl}:${confParams.kafkaZookeeperPort}`,
+        topics: [confParams.notificationsTopic, confParams.ordersTopic],
+        kafka,
+        logger,
+        ModuleInfo : Module,
+        maxRetries : confParams.maxRetriesForKafkaConnection
+      },
+      this.handleMessage.bind(this));
+
+
+
     this.server = express();
     this.server.use(express.json());
 

@@ -1,25 +1,17 @@
-import logger from 'logger';
-import { NotificationsString, orderTypesStr }  from  'smart-trader-common';
-
-import { Module } from './moduleInfo';
-
-const kafka = require('kafka-node');
-const MAX_RETRIES = 3;
-
-const PARTITION = 0;
 
 class EventQueue {
-  constructor(config, handleMessageCb) {
-    this.endpoint = config.endpoint;
-    const topics = config.topics;
-
-    const consumerGroupPrefix = Module.name;
+  constructor({ endpoint, topics, kafka, logger, moduleInfo , maxRetries },handleMessageCb) {
+    this.endpoint = endpoint;
+    topics;
+    this.kafka = kafka;
+    this.logger = logger;
+    const consumerGroupPrefix = moduleInfo.name;
+    this.maxRetries = maxRetries;
     this.initConsumerGroup(consumerGroupPrefix, topics, handleMessageCb);
-
   }
 
   initConsumerGroup(consumerGroupPrefix, topics, handleMessageCb) {
-    let retries = MAX_RETRIES;
+    let retries =  this.maxRetries;
 
     try {
       let options = { autoCommit: true,
@@ -31,10 +23,10 @@ class EventQueue {
         protocol: ['roundrobin']
       };
 
-      this.consumer = new kafka.ConsumerGroup(options, topics);
+      this.consumer = new this.kafka.ConsumerGroup(options, topics);
 
       this.consumer.on('error', function (err) {
-        logger.error('Kafka experienced an error - %s', err);
+        this.logger.error('Kafka experienced an error - %s', err);
       });
 
       this.consumer.on('message', function (message) {
@@ -42,10 +34,13 @@ class EventQueue {
       });
     }
     catch(err) {
-      logger.error('Error on kafka consumer:' + err);
+      this.logger.error('Error on kafka consumer:' + err);
       if (retries > 0) {
         retries--;
-        this.initConsumerGroup(consumerGroupPrefix, topics);
+        this.initConsumerGroup(consumerGroupPrefix, topics, handleMessageCb);
+      }
+      else{
+        this.logger.error('cant connect, stop retrying');
       }
     }
   }

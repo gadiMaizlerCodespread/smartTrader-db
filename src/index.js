@@ -3,7 +3,7 @@ import Server from 'server';
 import nodeConfigModule from 'node-config-module';
 
 // Set process name
-process.title = ['smart trader data database']; // TO-DO: change to your process real name.
+process.title = ['smart trader data database'];
 
 
 

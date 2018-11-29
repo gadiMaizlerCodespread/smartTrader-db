@@ -1,20 +1,12 @@
-import mysql from 'mysql';
-import logger from 'logger';
 import { Notifications, exchangeIds }  from  'smart-trader-common';
 
 
 class MysqlClient {
-  constructor(config) {
+  constructor({ connection, logger }) {
     this.loggedInExchanges = {};
     this.loggedInExchangesStr = '';
-
-    this.connection = mysql.createConnection({
-      host     : config.mysqlHost,
-      user     : config.mysqlUser,
-      password : config.mysqlPassword,
-      database : config.mysqlSchemaName
-    });
-    this.connection.connect();
+    this.connection = connection;
+    this.logger = logger;
   }
   writeNotificationEvent(notificationTypeId, event) {
 
@@ -50,10 +42,10 @@ class MysqlClient {
                           ,${errorMessage},'${event.eventTimeStamp}',${sendingModule},${actionType});`
     , function (error, results, fields) {
       if (error) {
-        logger.error('could not write to database err = %s', error);
+        this.logger.error('could not write to database err = %s', error);
         throw error;
       }
-      logger.debug('order written to db');
+      this.logger.debug('order written to db');
     });
   }
 
@@ -90,10 +82,10 @@ class MysqlClient {
 
     , function (error, results, fields) {
       if (error) {
-        logger.error('could not write to database err = %s', error);
+        this.logger.error('could not write to database err = %s', error);
         throw error;
       }
-      logger.debug('order written to db');
+      this.logger.debug('order written to db');
     });
   }
   manageLoggedInExchanges(event) {

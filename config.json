@@ -6,5 +6,6 @@
    "ordersTopic" : "orders",
    "notificationsTopic" : "notifications",
    "kafkaZookeeperPort" : "2181",
-   "kafkaZookeeperUrl" : "localhost"
+   "kafkaZookeeperUrl" : "localhost",
+   "maxRetriesForKafkaConnection" : 5
 }
