@@ -5,7 +5,7 @@ import EventQueue from 'eventQueue';
 import logger from 'logger';
 import MysqlClient from 'mysqlClient';
 import kafka       from 'kafka-node';
-import { Module } from './moduleInfo';
+import { Module } from '../utils/moduleInfo';
 
 
 
@@ -34,7 +34,7 @@ class Server {
         topics: [confParams.notificationsTopic, confParams.ordersTopic],
         kafka,
         logger,
-        ModuleInfo : Module,
+        moduleInfo : Module,
         maxRetries : confParams.maxRetriesForKafkaConnection
       },
       this.handleMessage.bind(this));
