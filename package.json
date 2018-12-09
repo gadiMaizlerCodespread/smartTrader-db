@@ -32,13 +32,13 @@
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-preset-env": "^1.7.0",
     "chai": "^4.2.0",
-    "eslint": "^5.9.0",
+    "eslint": "^5.10.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.6",
+    "nodemon": "^1.18.7",
     "nyc": "^12.0.2"
   },
   "engines": {
@@ -47,6 +47,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "kafka-node": "^3.0.1",
+    "moment": "^2.22.2",
     "mysql": "^2.16.0",
     "smart-trader-common": "git+https://github.com/bitmain-israel/smart-trader-common.git",
     "winston": "^3.1.0"

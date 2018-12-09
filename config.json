@@ -4,6 +4,8 @@
   "mysqlUser" : "root",
   "mysqlPassword" : "1234",
    "ordersTopic" : "orders",
+   "queryTopic"  : "query" ,
+   "queryAnsTopic" :  "queryAns",
    "notificationsTopic" : "notifications",
    "kafkaZookeeperPort" : "2181",
    "kafkaZookeeperUrl" : "localhost",

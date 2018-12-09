@@ -6,6 +6,8 @@ import logger from 'logger';
 import MysqlClient from 'mysqlClient';
 import kafka       from 'kafka-node';
 import { Module } from '../utils/moduleInfo';
+import { queryTypes } from 'smart-trader-common';
+import moment from 'moment';
 
 
 
@@ -26,16 +28,18 @@ class Server {
       database : confParams.mysqlSchemaName
     });
     connection.connect();
-    this.mysqlClient = new MysqlClient({ connection, logger });
+    this.mysqlClient = new MysqlClient({ connection, logger, moment, queryTypes });
 
     /** ******** KAFKA construction ******** **/
     this.eventQueue = new EventQueue(
       { endpoint: `${confParams.kafkaZookeeperUrl}:${confParams.kafkaZookeeperPort}`,
-        topics: [confParams.notificationsTopic, confParams.ordersTopic],
+        topics: [confParams.notificationsTopic, confParams.ordersTopic, confParams.queryTopic],
         kafka,
         logger,
         moduleInfo : Module,
-        maxRetries : confParams.maxRetriesForKafkaConnection
+        maxRetries : confParams.maxRetriesForKafkaConnection,
+        queryAnsTopic : confParams.queryAnsTopic,
+        moment
       },
       this.handleMessage.bind(this));
 
@@ -76,6 +80,10 @@ class Server {
     }
     else if (message.topic === this.confParams.ordersTopic) {
       this.mysqlClient.writeOrderEvent(message.key, value);
+    }
+    else if (message.topic === this.confParams.queryTopic) {
+      this.mysqlClient.query(value.filter, Number(message.key), value.requestId, this.eventQueue.sendQueryAnswer.bind(this.eventQueue));
+      // this.eventQueue.sendQueryAnswer(queryTypes.listTrades,  ans);
     }
     else {
       logger.error('unknown topic %s', message.topic);

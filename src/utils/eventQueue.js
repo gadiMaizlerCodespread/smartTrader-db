@@ -1,13 +1,33 @@
 
 class EventQueue {
-  constructor({ endpoint, topics, kafka, logger, moduleInfo , maxRetries },handleMessageCb) {
+  constructor({ endpoint, topics, kafka, logger, moduleInfo , maxRetries, queryAnsTopic, moment }, handleMessageCb) {
     this.endpoint = endpoint;
-    topics;
+    this.queryAnsTopic = queryAnsTopic;
     this.kafka = kafka;
+    this.moment = moment;
     this.logger = logger;
     const consumerGroupPrefix = moduleInfo.name;
     this.maxRetries = maxRetries;
     this.initConsumerGroup(consumerGroupPrefix, topics, handleMessageCb);
+    this.initProducer(kafka, logger);
+  }
+
+
+  initProducer() {
+    this.client = new this.kafka.Client(this.endpoint);
+    this.producer = new this.kafka.Producer(this.client);
+
+    this.producer.on('ready', function () {
+      this.client.refreshMetadata([this.queryAnsTopic], (err) => {
+        if (err) {
+          this.logger.warn('Error refreshing kafka metadata %s', err);
+        }
+      });
+    }.bind(this));
+
+    this.producer.on('error', function (err) {
+      this.error(err);
+    });
   }
 
   initConsumerGroup(consumerGroupPrefix, topics, handleMessageCb) {
@@ -43,6 +63,23 @@ class EventQueue {
         this.logger.error('cant connect, stop retrying');
       }
     }
+  }
+
+
+  sendQueryAnswer(type, id, message) {
+    const timestamp =  this.moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+    let ans = { data : message,eventTimeStamp: timestamp, requestId: id  };
+    // console.log('sendQueryAnswer, id = ' + id);
+    // message['requestId'] = id;
+    let keyedMessage = new this.kafka.KeyedMessage(type, JSON.stringify(ans));
+    this.producer.send([{ topic: this.queryAnsTopic, partition: 0, messages: [keyedMessage] }], function (err, result) {
+      if (err) {
+        this.logger.error(err);
+      }
+      else {
+        this.logger.debug('%o', result);
+      }
+    }.bind(this));
   }
 }
 
