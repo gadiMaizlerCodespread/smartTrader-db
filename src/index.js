@@ -13,7 +13,7 @@ const conf = nodeConfigModule.getConfig();
 /**
  * Create HTTP server.
  */
-// dsadsa
+// ds
 const serverApp = new Server(conf);
 const server = http.createServer(serverApp.getServer()).listen(3003);
 export default server;
