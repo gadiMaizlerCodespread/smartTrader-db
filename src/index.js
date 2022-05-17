@@ -6,7 +6,7 @@ import nodeConfigModule from 'node-config-module';
 process.title = ['smart trader data database']; // TO-DO: change to your process real name.
 
 
-
+console.log('test')
 const defaultConf = {};
 nodeConfigModule.init(defaultConf, null, ()=>{});
 const conf = nodeConfigModule.getConfig();
